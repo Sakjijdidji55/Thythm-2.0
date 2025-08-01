@@ -1,0 +1,36 @@
+MusicManager.py -> 音乐管理文件
+    ThemeManager -> 主题管理类
+    Theme -> 主题类
+
+MusicChoicer.py -> 音乐选择器文件
+    MusicChoicer -> 音乐播放器类
+
+Music.py -> 音乐本体文件
+    MUSICPAUSER -> 音乐暂停类
+    music -> 音乐类
+        MUSIC -> 游戏音乐类
+
+MusicEnd.py -> 音乐结束文件
+    MusicEnd -> 音乐结束类
+
+setting.py -> 设置文件
+    MUSICSETTING -> 音乐设置类
+
+node.py -> 音符文件
+    Ball -> 音符类 （普通音符）
+    LONGBALL -> 长音符类 （长按音符）
+    RaindropBall -> 雨滴类 （雨滴音符）
+    Particle -> 粒子类（做音符特效）
+
+user.py -> 用户文件
+    User -> 用户类
+
+userData.py -> 用户数据文件
+
+method.py -> 方法文件
+
+load.py -> 加载文件
+
+init.py -> 初始化文件
+
+main.py -> 主文件

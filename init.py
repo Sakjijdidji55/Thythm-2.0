@@ -44,7 +44,7 @@ def begin():
                 exit()
             state = user.check(event)
             # print(state)
-            if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and pos[1] > HEIGHT//2  or event.type == pygame.KEYDOWN) and not user.show: # 按下enter键
+            if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and pos[1] > HEIGHT//2  or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN)) and not user.show: # 按下enter键
                 enter_music.stop()
                 enter_music_start.start()
                 return

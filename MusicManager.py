@@ -97,6 +97,9 @@ class ThemeManager:
                 threading.Thread(target=lambda: enter_music_effect.play()).start()
                 self.sound.stop()
                 return self.get_current_theme_MusicChoicer()
+            elif event.key == pygame.K_ESCAPE: # 按下esc键
+                pygame.quit()
+                sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             if event.button == 1:
@@ -121,6 +124,8 @@ class ThemeManager:
     
     def set_volume(self, v):
         self.sound.set_volume(v)
+        for theme in self.theme_list:
+            theme.MusicChoice.set_volume(v)
 
     def __str__(self):
         return 'MusicManager'

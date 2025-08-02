@@ -7,10 +7,10 @@ Fifty = 50/1536*WIDTH # 这里1536
 Thirty = 30/1536*WIDTH
 
 class Ball:
-    def __init__(self,x:int, y:int,test_y:int):
+    def __init__(self,x:int, y:int,test_y:int, state: int):
         self.x = x
         self.y = y
-        self.speed = speed
+        self.speed = get_speed(state)
         self.length = 10/1536*WIDTH
         self.test_y = test_y
         self.img = pygame.transform.scale(circle_img, (Fifty, Fifty))
@@ -37,14 +37,14 @@ class Ball:
         return self.y - self.test_y > 40
         
 class LONGBALL:
-    def __init__(self,x:int, y:int,length:int,test_y:int):
+    def __init__(self,x:int, y:int,length:int,test_y:int, state: int):
         '''
         length: 长度
         test_y: 测试点
         '''
         self.x = x
         self.y = y
-        self.speed = speed
+        self.speed = get_speed(state)
         # print(length)
         self.length = length
         self.test_y = test_y
@@ -55,6 +55,7 @@ class LONGBALL:
         self.start = False
         self.ischeck = False
         self.score = 0
+        self.total_length = self.length
         
     def draw(self,window: pygame.Surface):
         window.blit(self.img_up,(self.x,self.y-Fifty/2))
@@ -71,9 +72,9 @@ class LONGBALL:
                 self.length = self.test_y - self.y + Fifty/2
                 
     def check(self):
-        if abs(self.y - self.test_y + self.length - Fifty/2) < 20:
+        if abs(self.y - self.test_y + self.total_length - Fifty/2) < 20:
             return 2
-        elif abs(self.y - self.test_y + self.length - Fifty/2) < 40:
+        elif abs(self.y - self.test_y + self.total_length - Fifty/2) < 40:
             return 1
         return 0
         
@@ -81,7 +82,7 @@ class LONGBALL:
         return self.y - self.test_y > Fifty // 2 + 20
     
 class RaindropBall:
-    def __init__(self,x:int, y:int, radius:int, test_y:int):
+    def __init__(self,x:int, y:int, radius:int, test_y:int, state: int):
         '''
         radius: 半径
         test_y: 测试点
@@ -89,7 +90,7 @@ class RaindropBall:
         self.x = x
         self.y = y
         self.radius = radius
-        self.speed = speed
+        self.speed = get_speed(state)
         self.test_y = test_y
         self.img = pygame.transform.scale(rains_img, (Thirty, Thirty/2+Thirty/2*math.sqrt(3)))
 

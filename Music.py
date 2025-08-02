@@ -123,9 +123,8 @@ class music:
         except:
             return 1
 
-    
 class MUSIC(music):
-    def __init__(self, music_name: str, music_path: str, music_volume: float, music_writer: str, rank: str, father=None):
+    def __init__(self, music_name: str, music_path: str, music_volume: float, music_writer: str, rank: str, father=None, state: int = 1):
         super().__init__(music_name, music_path, music_volume, music_writer, rank)
         self.effect = True
         self.father = father
@@ -133,8 +132,8 @@ class MUSIC(music):
         self.longBalls = []
         self.rainBalls = []
         self.particles = []
-        self.score = 0 # 当前得分
-        self.total_score = 0 # 总分
+        self.score = 1 # 当前得分
+        self.total_score = 1 # 总分
         self.prefect = 0 # 完美
         self.good = 0 # 好的
         self.miss = 0 # 未命中
@@ -147,6 +146,7 @@ class MUSIC(music):
             default_init_pos[4]: None,
         } # 每个位置是的球
         self.is_load = False
+        self.state = state
 
     def load(self):
         self.image = pygame.transform.scale(pygame.image.load(musics[deal_name(self.music_name)]["image"]), (WIDTH, HEIGHT))
@@ -158,8 +158,8 @@ class MUSIC(music):
         self.father = father
     def start(self):
         self.replay()
-        self.score = 0
-        self.total_score = 0
+        self.score = 1
+        self.total_score = 1
         self.prefect = 0
         self.good = 0
         self.miss = 0
@@ -188,7 +188,7 @@ class MUSIC(music):
         pygame.draw.line(window, (255, 255, 255), (0, 0), (WIDTH * self.get_cur_pos(), 0), 4)
 
         continue_text = self.font.render("Continue: " + str(self.continue_bit), True, (255, 255, 255))
-        score_text = self.font.render("Score: " + str(int(self.score)), True, (255, 255, 255))
+        score_text = self.font.render("Score: " + str(round(self.score/self.total_score*100,2)) + "%", True, (255, 255, 255))
 
         window.blit(continue_text, (WIDTH // 2 - continue_text.get_width() // 2, 75))
         window.blit(score_text, (WIDTH - score_text.get_width() - WIDTH // 20, 75))
@@ -213,26 +213,32 @@ class MUSIC(music):
     def not_have_many_ball_(self):
         return sum([1 for ball in self.every_place_ball.values() if ball and ball.y < WIDTH // 4]) < 3
 
+    def set_state(self, state: int):
+        self.state = state
+
     def update(self):
-        while self.not_have_many_ball_() and self.idx < len(self.music_notes) and self.music_notes[self.idx] - (time.time() - self.start_time) < TEST_Y / (speed*1000/fps) + 0.1:
-            if (self.music_notes[self.idx] - (time.time() - self.start_time) - TEST_Y / (speed*1000/fps)) < 0.1:
+        while self.not_have_many_ball_() and self.idx < len(self.music_notes) and self.music_notes[self.idx] - (time.time() - self.start_time) < TEST_Y / (get_speed(self.state)*1000/fps) + 0.1:
+            if (self.music_notes[self.idx] - (time.time() - self.start_time) - TEST_Y / (get_speed(self.state)*1000/fps)) < 0.1:
                 pos = random.choice(default_init_pos)
                 r = random.random()
                 if r < 0.3:
                     if self.valid_ball(pos):
                         self.total_score += 20
-                        self.shortBalls.append(Ball(pos[0], pos[1] - 50*WIDTH//1536, TEST_Y))
+                        self.score += 20
+                        self.shortBalls.append(Ball(pos[0], pos[1] - 50*WIDTH//1536, TEST_Y, self.state))
                         self.every_place_ball[pos] = self.shortBalls[-1]
                 elif r < 0.5:
                     if self.valid_ball(pos):
-                        self.total_score += 200
+                        self.total_score += 100
+                        self.score += 100
                         length = random.randint(50,400)*WIDTH//1536
-                        self.longBalls.append(LONGBALL(pos[0], pos[1] - length - 25*WIDTH//1536 , length,TEST_Y))
+                        self.longBalls.append(LONGBALL(pos[0], pos[1] - length - 25*WIDTH//1536 , length,TEST_Y, self.state))
                         self.every_place_ball[pos] = self.longBalls[-1]
                 else:
                     if self.valid_ball(pos):
                         self.total_score += 10
-                        self.rainBalls.append(RaindropBall(pos[0], pos[1] - 50*WIDTH//1536, 15*WIDTH//1536,TEST_Y))
+                        self.score += 10
+                        self.rainBalls.append(RaindropBall(pos[0], pos[1] - 50*WIDTH//1536, 15*WIDTH//1536,TEST_Y, self.state))
                         self.every_place_ball[pos] = self.rainBalls[-1]
             self.idx += 1
             
@@ -251,6 +257,7 @@ class MUSIC(music):
     def check(self):
         for ball in self.shortBalls:
             if ball.is_out_of_line():
+                self.score -= 20
                 self.miss += 1
                 self.continue_bit = 0
                 self.shortBalls.remove(ball)
@@ -259,18 +266,20 @@ class MUSIC(music):
         for ball in self.longBalls:
             if ball.is_out_of_line():
                 if ball.score == 0:
+                    self.score -= 100
                     self.continue_bit = 0
                     self.miss += 1
                 elif ball.score == 1:
+                    self.score -= 25
                     self.good += 1
                 elif ball.score == 2:
                     self.prefect += 1
-                self.score += 100*ball.score
                 self.longBalls.remove(ball)
                 del ball
                 
         for ball in self.rainBalls:
             if ball.is_out_of_line():
+                self.score -= 10
                 self.miss += 1
                 self.continue_bit = 0
                 self.rainBalls.remove(ball)
@@ -299,7 +308,6 @@ class MUSIC(music):
                     # print("rain")
                     self.continue_bit += 1
                     self.prefect += 1
-                    self.score += 10
                     self.particles.extend(make_particles(ball.x + 25 / 1536 * WIDTH, TEST_Y + 25*WIDTH//1536, green))
                     self.rainBalls.remove(ball)
                     del ball
@@ -307,7 +315,7 @@ class MUSIC(music):
     def check_short_and_long(self,event):
         if event.type == pygame.KEYDOWN: # 检测是否有键被按下
             cnt = sum(pygame.key.get_pressed()) # 获取按下的键的数量
-            print(cnt)
+            # print(cnt)
             # print(cnt)
             # print(cnt)
             for ball in self.shortBalls:
@@ -316,7 +324,7 @@ class MUSIC(music):
                     if self.effect:
                         threading.Thread(target=sound_effect.play).start()
                     cnt -= 1
-                    self.score += 10 * check
+                    self.score -= 5 * (2-check)
                     self.continue_bit += 1
                     if check == 1:
                         self.good += 1

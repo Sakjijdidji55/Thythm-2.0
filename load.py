@@ -3,16 +3,20 @@ import threading
 import os
 import time
 import pygame
-from method import load_from_json
+from method import *
 from pynput.keyboard import Key, Controller
 from userData import *
+
+# t = time.time()
 
 pygame.init()
 
 WIDTH, HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
 clock = pygame.time.Clock()
 fps = 60
-speed = 5/1536*WIDTH
+def get_speed(state):
+    return 5 * state * (60 / fps) * WIDTH // 1536
+
 
 musics = load_from_json("music_data/music_path.json")
 music_names =  list(musics.keys())
@@ -64,6 +68,9 @@ perfect_img = pygame.transform.scale(pygame.image.load('./image/perfect.png'),(4
 good_img = pygame.transform.scale(pygame.image.load('./image/good.png'),(400/1536*WIDTH,100/1536*WIDTH))
 miss_img = pygame.transform.scale(pygame.image.load('./image/miss.png'),(400/1536*WIDTH,100/1536*WIDTH))
 stop_img = pygame.transform.scale(pygame.image.load('./image/stop.png'),(small_setting_length,small_setting_length))
+choiced_img = pygame.transform.scale(pygame.image.load('image/choiced.png'), (small_setting_length * 2, small_setting_length)).convert_alpha()
+choiced_img.set_alpha(128)
+choiced_select_img = pygame.transform.scale(pygame.image.load('image/choice_board.png'), (small_setting_length * 2, small_setting_length))
 
 sound_effect = pygame.mixer.Sound('./music/sound_effect.MP3')
 enter_music = pygame.mixer.Sound("./music/enter.mp3")

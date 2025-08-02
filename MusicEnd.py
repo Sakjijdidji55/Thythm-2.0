@@ -17,6 +17,7 @@ class MusicEnd:
         self.score_size = pygame.font.Font("./font/SanJiLuRongTi/SanJiLuRongTi-2.ttf", int(80/1536*WIDTH))
         self.text_size = pygame.font.Font("./font/SanJiLuRongTi/SanJiLuRongTi-2.ttf", int(50/1536*WIDTH))
         self.score = score
+        self.total = total
         self.perfect = perfect
         self.miss = miss
         self.good = good
@@ -33,7 +34,7 @@ class MusicEnd:
             return "SS"
         if score/total >= 0.95:
             return "S"
-        if score >= total * 0.9:
+        if score >= total * 0.92:
             return "A"
         if score >= total * 0.8:
             return "B"
@@ -49,10 +50,10 @@ class MusicEnd:
         window.blit(continue_img,(WIDTH - 125/1536*WIDTH - WIDTH//24,HEIGHT - 125/1536*WIDTH)) # 绘制继续按钮
         
         window.blit(name_img,(WIDTH//4 + WIDTH//16 - name_img.get_width()//2,HEIGHT//8)) # 绘制top图片
-        name = self.text_size.render(self.song.music_name, True, (0, 0, 0))
+        name = self.text_size.render(self.song.music_name[:12], True, (0, 0, 0))
         window.blit(name, (WIDTH//4 + WIDTH//16 - name.get_width()//2, HEIGHT//8 + 25 ))
         
-        score = self.score_size.render(str(self.score), True, (255, 255, 255))
+        score = self.score_size.render(str(int(self.score/self.total*10000)), True, (255, 255, 255))
         rank = self.rank_size.render(self.rank, True, (128,0, 255)) # 绘制排名
         perfect = self.text_size.render("Perfect: " + str(self.perfect), True, (0, 0, 0))
         miss = self.text_size.render("Miss: " + str(self.miss), True, (0, 0, 0)) # 绘制分数

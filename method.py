@@ -15,5 +15,3 @@ def deal_name(name: str):
 
 def re_name(name: str):
     return name.replace("_", " ")
-
-

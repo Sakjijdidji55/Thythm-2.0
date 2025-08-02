@@ -48,8 +48,23 @@ class MusicChoicer:
         theme_name = self.text_size.render(self.father.name, True, (128, 128, 128)) # 添加主题名字
         window.blit(top_image,(WIDTH//2 - 200/1536*WIDTH,HEIGHT//8 - 65/1536*WIDTH)) # 添加主题名字后的背景
         window.blit(theme_name, (WIDTH//2 - theme_name.get_width()//2, HEIGHT//8 - 30/1536*WIDTH ))
-        
+
+        # 选择难度
         window.blit(self.songs_list[self.index[1]].cover, self.bk_pos) # 添加音乐封面
+        easy_text = self.text_size.render("简单", True, self.text_color)
+        window.blit(choiced_select_img, (self.bk_pos[0] + 150*WIDTH//1536, self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536))
+        window.blit(easy_text, (self.bk_pos[0] + 150*WIDTH//1536 + choiced_select_img.get_width()//2 - easy_text.get_width()//2, self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height()//2 - easy_text.get_height()//2))
+        mid_text = self.text_size.render("中等", True, self.text_color)
+        window.blit(choiced_select_img, (self.bk_pos[0] + 170*WIDTH//1536 + choiced_select_img.get_width(), self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536))
+        window.blit(mid_text, (self.bk_pos[0] + 170*WIDTH//1536 + choiced_select_img.get_width() + choiced_select_img.get_width()//2 - mid_text.get_width()//2, self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height()//2 - mid_text.get_height()//2))
+        hard_text = self.text_size.render("困难", True, self.text_color)
+        window.blit(choiced_select_img, (self.bk_pos[0] + 190*WIDTH//1536 + 2 * choiced_select_img.get_width(), self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536))
+        window.blit(hard_text, (self.bk_pos[0] + 190*WIDTH//1536 + 2 * choiced_select_img.get_width() + choiced_select_img.get_width()//2 - hard_text.get_width()//2, self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height()//2 - hard_text.get_height()//2))
+        for i in range(3):
+            if i == self.get_cur_music().state - 1:
+                continue
+            window.blit(choiced_img, (self.bk_pos[0] + 150*WIDTH//1536 + i * (20+choiced_select_img.get_width()), self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536))
+
         best_rank = self.rank_font.render("Best Rank:"+self.songs_list[self.index[1]].best_rank,True, (255, 255, 255))
         window.blit(best_rank, (self.bk_pos[0] + WIDTH//2 - best_rank.get_width() , self.bk_pos[1] - 80/1536*WIDTH))
         
@@ -114,21 +129,50 @@ class MusicChoicer:
                     self.songs_list[self.index[1]].stop_sound()
                     threading.Thread(target=lambda : enter_music_effect.play()).start()
                     return self.father_father # 返回主题界面，并停止当前音乐，这里是点击主题文字时或者点击返回按钮时触发
-                if pos[0] > self.bk_pos[0] and self.bk_pos[1] < pos[1] < self.bk_pos[1] + HEIGHT // 2 + HEIGHT // 8:
+                if pos[0] > self.bk_pos[0] and self.bk_pos[1] < pos[1] < self.bk_pos[1] + HEIGHT // 2:
                     self.songs_list[self.index[1]].stop_sound()
                     threading.Thread(target=lambda : enter_music_effect.play()).start()
                     return self.get_cur_music() # 开始音乐
                 if 150/1536*WIDTH < pos[0] < 222/1536*WIDTH and 40 / 1536 * WIDTH < pos[1] < 112 / 1536 * WIDTH:
                     return 'set'
-        if event.key == pygame.K_RETURN:
-            self.songs_list[self.index[1]].stop_sound()
-            threading.Thread(target=lambda: enter_music_effect.play()).start()
-            return self.get_cur_music()  # 开始音乐
+                if self.bk_pos[0] + 150*WIDTH//1536 < pos[0] < self.bk_pos[0] + 150*WIDTH//1536 + choiced_select_img.get_width() and  self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 < pos[1] < self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height():
+                    self.get_cur_music().state = 1
+                if self.bk_pos[0] + 170*WIDTH//1536 + choiced_select_img.get_width() < pos[0] < self.bk_pos[0] + 170*WIDTH//1536 + 2*choiced_select_img.get_width() and  self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 < pos[1] < self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height():
+                    self.get_cur_music().state = 2
+                if self.bk_pos[0] + 190*WIDTH//1536 + 2*choiced_select_img.get_width() < pos[0] < self.bk_pos[0] + 190*WIDTH//1536 + 3*choiced_select_img.get_width() and  self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 < pos[1] < self.bk_pos[1] + HEIGHT//2 + 20*WIDTH//1536 + choiced_select_img.get_height():
+                    self.get_cur_music().state = 3
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                self.songs_list[self.index[1]].stop_sound()
+                threading.Thread(target=lambda: enter_music_effect.play()).start()
+                return self.get_cur_music()  # 开始音乐
+
+            if event.key == pygame.K_ESCAPE:
+                self.songs_list[self.index[1]].stop_sound()
+                threading.Thread(target=lambda: enter_music_effect.play()).start()
+                return self.father_father  # 返回主题界面，并停止当前音乐
+
+            if event.key == pygame.K_DOWN:
+                self.switch(1, window)
+                self.songs_list[self.index[1]].stop_sound()
+                self.index.insert(0, (self.index[0] - 1 + len(self.songs_list)) % len(self.songs_list))
+                self.index.pop()  # 更新索引
+                self.switch(2, window)
+                self.songs_list[self.index[1]].play_sound()
+
+            if event.key == pygame.K_UP:
+                self.switch(1, window)
+                self.songs_list[self.index[1]].stop_sound()
+                self.index.append((self.index[-1] - 1 + len(self.songs_list)) % len(self.songs_list))
+                self.index.pop(0)  # 更新索引
+                self.switch(2, window)
+                self.songs_list[self.index[1]].play_sound()
         return None
 
     def set_volume(self,volume:float):
-        for i in range(4):
-            self.songs_list[self.index[i]].set_volume(volume)
+        for song in self.songs_list:
+            song.set_volume(volume)
 
     def __str__(self):
         return "Music_Choicer"

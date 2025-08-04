@@ -1,5 +1,3 @@
-import json
-import librosa
 import os
 
 import pygame
@@ -23,10 +21,10 @@ music_list = {}
 #             "cover": os.path.join("gamecover", file, f[:-4] + ".png"),
 #             "image": os.path.join("gameimage", file, f[:-4] + ".png"),
 #             }
-        # pygame.mixer.music.load(music_list[name]["music"])
-        # pygame.image.load(music_list[name]["cover"])
-        # pygame.image.load(music_list[name]["image"])
-        # music_list[f.split("-")[1][:-4]]=os.path.join("gamemusic", file, f)
+# pygame.mixer.music.load(music_list[name]["music"])
+# pygame.image.load(music_list[name]["cover"])
+# pygame.image.load(music_list[name]["image"])
+# music_list[f.split("-")[1][:-4]]=os.path.join("gamemusic", file, f)
 
 # if not os.path.exists("enter"):
 #     os.mkdir("enter")
@@ -45,16 +43,15 @@ music_list = {}
 #     tempo, beat_frames = librosa.beat.beat_track(y=y, sr=sr)
 #     beat_times = librosa.frames_to_time(beat_frames, sr=sr)
 #     music_notes[k] = beat_times.tolist()
-    
-    
+
+
 # import json
 # with open("music_data/music_path.json", "w") as f:
 #     json.dump(music_list, f)
 # with open("music_data/music_notes.json", "w") as f:
 #     json.dump(music_notes, f)
-    
-    
-    
+
+
 # beat_times = librosa.frames_to_time(beat_frames, sr=sr)
 
 
@@ -68,7 +65,7 @@ for file in os.listdir("nswitch"):
     img = img.convert("RGBA")
 
     pixels = img.load()
-    
+
     width, height = img.size
 
     for x in range(width):
@@ -77,5 +74,5 @@ for file in os.listdir("nswitch"):
             if abs(r) < 5 and abs(g) < 5 and abs(b) < 5:
                 pixels[x, y] = (0, 0, 0, 0)
             else:
-                pixels[x, y] = (min(r+10, 255), min(g+10, 255), min(b+10, 255), a)
+                pixels[x, y] = (min(r + 10, 255), min(g + 10, 255), min(b + 10, 255), a)
     img.save("switch/" + file)

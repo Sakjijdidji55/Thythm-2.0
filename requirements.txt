@@ -1,0 +1,7 @@
+evdev==1.9.2
+pillow==11.3.0
+psutil==7.0.0
+pygame==2.6.1
+pynput==1.8.1
+python-xlib==0.33
+six==1.17.0

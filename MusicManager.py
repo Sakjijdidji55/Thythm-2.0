@@ -40,9 +40,7 @@ class theme:
 
 class ThemeManager:
     def __init__(self, theme_sources: list):
-        """
-        theme_list: 主题列表
-        """
+        """theme_sources: 主题列表"""
         self.theme_sources = theme_sources  # 主题源文件列表
         self.current_theme_index = 0
         self.sound = pygame.mixer.Sound("./gamemusic/pianocd - 星河.mp3")

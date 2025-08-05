@@ -6,7 +6,6 @@ import user
 from init import *
 
 
-# 初始化日志
 log = getLogger(__name__)
 
 t = time.time()

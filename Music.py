@@ -1,6 +1,8 @@
 import random
 import sys
 from logging import getLogger
+import threading
+import time
 
 import pygame
 from method import load_from_json, deal_name
@@ -44,7 +46,7 @@ class MUSICPAUSER:
         )
 
     def check(self, event):
-        # 检查事件类型是否为鼠标点击事件
+        """检查事件类型是否为鼠标点击事件"""
         if event.type == pygame.MOUSEBUTTONDOWN:
             # 检查鼠标点击的按钮是否为左键
             if event.button == 1:
@@ -74,7 +76,6 @@ class MUSICPAUSER:
 
 
 class music:
-    # 初始化音乐类，传入音乐名称、路径、音量、作者
     def __init__(
         self,
         music_name: str,
@@ -83,6 +84,7 @@ class music:
         music_writer: str,
         rank: str,
     ):
+        """初始化音乐类，传入音乐名称、路径、音量、作者"""
         self.music_name = music_name
         self.music_path = music_path
         self.music_volume = music_volume
@@ -94,32 +96,32 @@ class music:
         self.music_notes = music_notes[deal_name(music_name)]
         self.length = self.background_music.get_length() * 1000
 
-    # 播放音乐
     def play(self):
+        """播放音乐"""
         pygame.mixer.music.load(self.music_path)
         pygame.mixer.music.set_volume(self.music_volume)
         pygame.mixer.music.play()
 
-    # 停止音乐
     def stop(self):
+        """停止音乐"""
         pygame.mixer.music.stop()
 
-    # 暂停音乐
     def pause(self):
+        """暂停音乐"""
         pygame.mixer.music.pause()
 
-    # 继续播放音乐
     def continue_play(self):
+        """继续播放音乐"""
         pygame.mixer.music.unpause()
 
-    # 设置音量
     def set_volume(self, volume: float):
+        """设置音量"""
         self.music_volume = volume
         pygame.mixer.music.set_volume(self.music_volume)
         self.background_music.set_volume(self.music_volume)
 
-    # 重新播放音乐
     def replay(self):
+        """重新播放音乐"""
         pygame.mixer.music.rewind()
 
     def play_sound(self):
@@ -128,20 +130,20 @@ class music:
     def stop_sound(self):
         self.background_music.stop()
 
-    # 获取音乐名称
     def get_name(self):
+        """获取音乐名称"""
         return self.music_name
 
-    # 获取音乐路径
     def get_path(self):
+        """获取音乐路径"""
         return self.music_path
 
-    # 获取音乐音量
     def get_volume(self):
+        """获取音乐音量"""
         return self.music_volume
 
-    # 获取音乐作者
     def get_writer(self):
+        """获取音乐作者"""
         return self.music_writer
 
     def is_music_over(self):
@@ -184,7 +186,7 @@ class MUSIC(music):
             default_init_pos[2]: None,
             default_init_pos[3]: None,
             default_init_pos[4]: None,
-        }  # 每个位置是的球
+        }  # 每个位置上的球
         self.is_load = False
         self.state = state
 
@@ -219,7 +221,7 @@ class MUSIC(music):
             default_init_pos[2]: None,
             default_init_pos[3]: None,
             default_init_pos[4]: None,
-        }  # 每个位置是的球
+        }  # 每个位置上的球
         self.shortBalls = []
         self.longBalls = []
         self.rainBalls = []
@@ -268,11 +270,13 @@ class MUSIC(music):
 
     def not_have_many_ball_(self):
         return (
-            sum([
-                1
-                for ball in self.every_place_ball.values()
-                if ball and ball.y < WIDTH // 4
-            ])
+            sum(
+                [
+                    1
+                    for ball in self.every_place_ball.values()
+                    if ball and ball.y < WIDTH // 4
+                ]
+            )
             < 3
         )
 

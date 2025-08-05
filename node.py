@@ -135,8 +135,9 @@ class RaindropBall:
         return self.y - self.test_y > 10
 
 
-# 定义粒子类
 class Particle:
+    """定义粒子类"""
+
     def __init__(self, x: int, y: int, color: tuple):
         self.x = x
         self.y = y

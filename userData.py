@@ -38,8 +38,9 @@ def get_info(username_entry, description_text, file_path_label):
     print(f"头像文件路径: {file_path}")
 
 
-# 定义一个函数，用于获取信息
 def get_info_window():
+    """定义一个函数，用于获取信息"""
+
     def choose_file():
         file_path = filedialog.askopenfilename(
             title="选择头像图片", filetypes=[("Image files", "*.png *.jpg")]

@@ -29,10 +29,12 @@ for file in os.listdir("./enter"):
 
 for file in os.listdir("./start"):
     path = "./start/" + file
-    start_video.append([
-        pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)),
-        False,
-    ])
+    start_video.append(
+        [
+            pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)),
+            False,
+        ]
+    )
 
 start_video[0][1] = True
 start_video[30][1] = True
@@ -138,8 +140,8 @@ music_inform = get_music_inform(music_inform)
 
 
 class Raindrop:
-    # 初始化雨滴的属性
     def __init__(self):
+        """初始化雨滴的属性"""
         # 随机生成雨滴的初始位置
         self.x = random.randint(0, WIDTH)
         self.y = 0
@@ -148,20 +150,20 @@ class Raindrop:
         # 随机生成雨滴的长度
         self.length = random.randint(10, 20)
 
-    # 雨滴下落的方法
     def fall(self):
+        """雨滴下落的方法"""
         # 雨滴的y坐标增加速度
         self.y += self.speed
 
-    # 绘制雨滴的方法
     def draw(self, window):
+        """绘制雨滴的方法"""
         # 在窗口上绘制雨滴
         pygame.draw.line(
             window, (211, 211, 211), (self.x, self.y), (self.x, self.y + self.length), 2
         )
 
-    # 判断雨滴是否超出屏幕的方法
     def off_screen(self):
+        """判断雨滴是否超出屏幕的方法"""
         # 如果雨滴的y坐标大于屏幕的高度，则返回True
         return self.y > HEIGHT
 

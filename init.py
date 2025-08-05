@@ -42,7 +42,7 @@ def begin():
         "轻触开始, (注：素材大部分来自与网络，侵删)", True, (255, 255, 255)
     )
 
-    i = 0  # enter_video[i]
+    i = 0
     while True:
         pos = pygame.mouse.get_pos()
         for event in pygame.event.get():

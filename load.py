@@ -5,7 +5,6 @@ from method import *
 from pynput.keyboard import Key, Controller
 from userData import *
 
-# t = time.time()
 
 pygame.init()
 
@@ -30,9 +29,10 @@ for file in os.listdir("./enter"):
 
 for file in os.listdir("./start"):
     path = "./start/" + file
-    start_video.append(
-        [pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)), False]
-    )
+    start_video.append([
+        pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)),
+        False,
+    ])
 
 start_video[0][1] = True
 start_video[30][1] = True

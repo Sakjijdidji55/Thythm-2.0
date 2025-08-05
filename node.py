@@ -2,6 +2,9 @@ import pygame
 import random
 import math
 from load import *
+from logging import getLogger
+
+log = getLogger(__name__)
 
 Fifty = 50 / 1536 * WIDTH  # 这里1536
 Thirty = 30 / 1536 * WIDTH
@@ -51,7 +54,7 @@ class LONGBALL:
         self.x = x
         self.y = y
         self.speed = get_speed(state)
-        # print(length)
+        log.debug(length)
         self.length = length
         self.test_y = test_y
         self.win = False

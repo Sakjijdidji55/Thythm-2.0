@@ -227,7 +227,6 @@ class MusicChoicer:
                 window.blit(surface, (0, 0))
                 pygame.display.update()
         elif key == 2:
-            # window.fill((0, 0, 0))
             surface = pygame.Surface((WIDTH, HEIGHT))
             self.draw(surface)
             for i in range(0, 256, 16):

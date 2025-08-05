@@ -1,5 +1,6 @@
 import random
 import sys
+from logging import getLogger
 
 import pygame
 from method import load_from_json, deal_name
@@ -7,6 +8,8 @@ from load import *
 from node import *
 from setting import *
 
+
+log = getLogger(__name__)
 music_notes = load_from_json("music_data/music_notes.json")
 
 TEST_Y = 650 / 1536 * WIDTH
@@ -265,13 +268,11 @@ class MUSIC(music):
 
     def not_have_many_ball_(self):
         return (
-            sum(
-                [
-                    1
-                    for ball in self.every_place_ball.values()
-                    if ball and ball.y < WIDTH // 4
-                ]
-            )
+            sum([
+                1
+                for ball in self.every_place_ball.values()
+                if ball and ball.y < WIDTH // 4
+            ])
             < 3
         )
 
@@ -402,7 +403,7 @@ class MUSIC(music):
                 if check:  # 检查球是否被击中且未被检查
                     if self.effect:
                         threading.Thread(target=sound_effect.play).start()
-                    # print("rain")
+                    log.debug("rain")
                     self.continue_bit += 1
                     self.prefect += 1
                     self.particles.extend(
@@ -418,9 +419,7 @@ class MUSIC(music):
     def check_short_and_long(self, event):
         if event.type == pygame.KEYDOWN:  # 检测是否有键被按下
             cnt = sum(pygame.key.get_pressed())  # 获取按下的键的数量
-            # print(cnt)
-            # print(cnt)
-            # print(cnt)
+            log.debug(cnt)
             for ball in self.shortBalls:
                 check = ball.check()  # 检查球是否被击中
                 if check and cnt:
@@ -513,25 +512,3 @@ class MUSIC(music):
 
     def __str__(self):
         return "Music"
-
-
-# if __name__ == "__main__":
-#     m = MUSIC(" 鸳鸯戏", "gamemusic\古风\邓寓君(等什么君) - 鸳鸯戏.mp3", 0.5, "邓寓君", "无")
-#     m.start()
-#     while True:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 exit()
-#             m.check_short_and_long(event)
-#             state = m.is_check_setting(event, window)
-#             if state == "return":
-#                 m.start()
-#                 break
-#         # print(m.get_cur_pos())
-#         m.check_long_and_rain()
-#         m.update()
-#         m.check()
-#         m.draw(window)
-#         pygame.display.update()
-#         clock.tick(fps)

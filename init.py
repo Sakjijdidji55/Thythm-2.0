@@ -5,7 +5,9 @@ from Music import *
 from MusicManager import *
 from setting import *
 from MusicEnd import *
+from logging import getLogger
 
+log = getLogger(__name__)
 user = User(user_inform["name"], user_inform["icon_path"], user_inform["description"])
 
 
@@ -47,7 +49,7 @@ def begin():
             if event.type == pygame.QUIT:
                 exit()
             state = user.check(event)
-            # print(state)
+            log.debug(state)
             if (
                 event.type == pygame.MOUSEBUTTONDOWN
                 and event.button == 1

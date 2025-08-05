@@ -1,12 +1,18 @@
 import time
+from logging import getLogger
 
 import psutil
 import user
 from init import *
 
+
+# 初始化日志
+log = getLogger(__name__)
+
+t = time.time()
 cur_machine.init_themes()
 Manager = cur_machine
-# print("init time:", time.time() - t)
+log.debug("init time: %ss", time.time() - t)
 begin()
 help_switch(cur_machine)  # 初始化游戏
 
@@ -24,10 +30,10 @@ cur_machine.start()
 last_time = time.time()
 cnt = 0
 text = font.render("FPS: " + str(fps), True, (255, 255, 255))
+pid = os.getpid()
+p = psutil.Process(pid)
 
 while True:
-    pid = os.getpid()
-    p = psutil.Process(pid)
     memory_rss = p.memory_info().rss / 1024 / 1024
     print(
         "memory_rss:", memory_rss, "MB"
@@ -56,7 +62,7 @@ while True:
             setting.is_check_set(event)
             Manager.set_volume(setting.get_volume())
             fps = setting.get_fps()
-            # print(cur_state)
+            log.debug(cur_state)
         elif not user.show:
             if cur_state == ThemeManager_state:  # 这样当检查setting时不会检测主题
                 next_state = cur_machine.change_theme(event)
@@ -68,7 +74,7 @@ while True:
                     help_switch(cur_machine)  # 进入对应主题的歌曲选择器
                     cur_machine.start()
             elif cur_state == Music_choicer_state:
-                # print(cur_state)
+                log.debug(cur_state)
                 next = cur_machine.scroll(event)
                 if next == "set":
                     setting.WaitToChoice = True
@@ -95,13 +101,13 @@ while True:
                         help_switch(cur_machine)
                         cur_machine.start()
             elif cur_state == Music_end_state:
-                # print(cur_machine)
+                log.debug(cur_machine)
                 next = cur_machine.check(event)  # 检查游戏结束后的逻辑
                 if next == "set":
                     setting.WaitToChoice = True
                 elif next is not None:
                     cur_machine = next
-                    # print(cur_machine, str(cur_machine))
+                    log.debug("%r %s", cur_machine, cur_machine)
                     if str(cur_machine) == "Music_Choicer":  # 返回歌曲选择器
                         cur_state = Music_choicer_state
                         help_switch(cur_machine)
@@ -111,7 +117,7 @@ while True:
                         cur_machine.effect = setting.effect_state
                         cur_machine.start()
                         cur_state = Music_running_state
-                    # print(cur_state)
+                    log.debug(cur_state)
 
     cur_machine.draw(window)  # 绘制游戏界面
 

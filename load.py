@@ -1,5 +1,5 @@
-import os
 import random
+from pathlib import Path
 
 import pygame
 from pynput.keyboard import Controller, Key
@@ -20,32 +20,28 @@ def get_speed(state):
 
 musics = load_from_json("music_data/music_path.json")
 music_names = list(musics.keys())
-start_video = []
-enter_video = []
-switch_video = []
 
-for file in os.listdir("./enter"):
-    path = "./enter/" + file
-    enter_video.append(pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)))
+enter_video = [
+    pygame.transform.scale(pygame.image.load(file), (WIDTH, HEIGHT))
+    for file in Path("./enter").iterdir()
+]
 
-for file in os.listdir("./start"):
-    path = "./start/" + file
-    start_video.append(
-        [
-            pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT)),
-            False,
-        ]
-    )
+start_video = [
+    [
+        pygame.transform.scale(pygame.image.load(file), (WIDTH, HEIGHT)),
+        False,
+    ]
+    for file in Path("./start").iterdir()
+]
 
 start_video[0][1] = True
 start_video[30][1] = True
 start_video[-1][1] = True
 
-for file in os.listdir("./switch"):
-    path = "./switch/" + file
-    switch_video.append(
-        pygame.transform.scale(pygame.image.load(path), (WIDTH, HEIGHT))
-    )
+switch_video = [
+    pygame.transform.scale(pygame.image.load(file), (WIDTH, HEIGHT))
+    for file in Path("./switch").iterdir()
+]
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("THYTHM")

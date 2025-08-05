@@ -1,8 +1,9 @@
-import os
+import json
 import random
 import threading
 import time
 from logging import getLogger
+from pathlib import Path
 
 import pygame
 
@@ -15,7 +16,7 @@ from load import (
     start_video,
     switch_video,
 )
-from Music import deal_name, musics
+from Music import deal_name
 from MusicEnd import MUSIC
 from MusicManager import ThemeManager, black, enter_music_effect
 from setting import MUSICSETTING
@@ -136,29 +137,25 @@ def help_switch(obj):
 # 构建音乐列表
 themes_sources = []
 
-for theme in os.listdir("gamecover"):
-    cur = []
-    cur.append(theme)
-    cover_path = os.path.join("themecover", theme + ".png")
-    image_path = os.path.join("themeimage", theme + ".png")
-    cur.append(cover_path)
-    cur.append(image_path)
+for theme in Path("./musplays").iterdir():
     music_list = []
 
-    for music in os.listdir(os.path.join("gamemusic", theme)):
-        music_name = music.split("-")[-1][:-4]
+    for music in theme.iterdir():
+        music_name = music.name.split("-")[-1]
         dealed_name = deal_name(music_name)
+        with (music / "metadata.json").open() as file:
+            author = json.load(file)["author"]
+
         music_list.append(
             MUSIC(
                 music_name,
-                musics[dealed_name]["music"],
+                str(music / "music.mp3"),
                 1,
-                musics[dealed_name]["author"],
+                author,
                 music_inform[dealed_name],
             )
         )
-    cur.append(music_list)
-    themes_sources.append(cur)
+    themes_sources.append((theme, theme / "cover.png", theme / "image.png", music_list))
 
 cur_machine = ThemeManager(themes_sources)
 

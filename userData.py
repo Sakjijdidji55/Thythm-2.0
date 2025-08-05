@@ -1,8 +1,8 @@
 import json
-import os
 import shutil
 import tkinter as tk
 from collections import defaultdict
+from pathlib import Path
 from tkinter import filedialog
 
 from PIL import Image, ImageTk
@@ -114,13 +114,13 @@ def set_user_inform(user_inform_path):
         # 指定保存图片的目标目录
         shift = False
         target_folder = "UserInform"
-        if not os.path.exists(target_folder):
-            os.makedirs(target_folder)
+        target_folder_path = Path(target_folder)
+        target_folder_path.mkdir(parents=True, exist_ok=True)
         # 将头像文件移动到目标目录
         source_file = user_inform["icon_path"]
-        destination_file = os.path.join(target_folder, os.path.basename(source_file))
+        destination_file = target_folder_path / Path(source_file).name
         shutil.copy2(source_file, destination_file)
-        user_inform["icon_path"] = destination_file
+        user_inform["icon_path"] = str(destination_file)
         print(f"头像文件已成功移动至{destination_file}")
     if user_inform["name"] == "":
         user_inform["name"] = "未命名"
@@ -132,34 +132,30 @@ def set_user_inform(user_inform_path):
 
 
 def get_user_inform(user_inform_path):
-    if not os.path.exists(user_inform_path):
+    path = Path(user_inform_path)
+    if not path.exists():
         set_user_inform(user_inform_path)
 
-    with open(user_inform_path, "r") as f:
-        user = json.loads(f.read())
-        return user  # 读取用户信息
+    return json.loads(path.read_text())  # 读取用户信息
 
 
 def save_user_inform(user_inform_path, user_inform):
-    if not os.path.exists(os.path.dirname(user_inform_path)):
-        os.mkdir(os.path.dirname(user_inform_path))
-    with open(user_inform_path, "w") as f:
-        f.write(json.dumps(user_inform))  # 保存用户信息
+    path = Path(user_inform_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(user_inform))  # 保存用户信息
 
 
 def save_music_inform(music_inform_path, music_inform):
-    if not os.path.exists(os.path.dirname(music_inform_path)):
-        os.mkdir(os.path.dirname(music_inform_path))
-    with open(music_inform_path, "w") as f:
-        f.write(json.dumps(music_inform))  # 保存音乐信息
+    path = Path(music_inform_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(music_inform))  # 保存音乐信息
 
 
 def get_music_inform(music_inform, music_inform_path=music_inform_path):
-    if not os.path.exists(music_inform_path):
+    path = Path(music_inform_path)
+    if not path.exists():
         save_music_inform(music_inform_path, music_inform)
-    with open(music_inform_path, "r") as f:
-        music_inform = json.loads(f.read())
-        return music_inform  # 读取音乐信息
+    return json.loads(path.read_text())  # 读取音乐信息
 
 
 user_inform = get_user_inform(user_inform_path)

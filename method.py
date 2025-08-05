@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 green = (0, 255, 0)
 red = (255, 0, 0)
@@ -6,9 +7,7 @@ blue = (0, 0, 255)
 
 
 def load_from_json(file_name: str):
-    with open(file_name, "r") as f:
-        data = json.load(f)
-    return data  # 从JSON文件中读取数据并返回
+    return json.loads(Path(file_name).read_text("utf-8"))  # 从JSON文件中读取数据并返回
 
 
 def deal_name(name: str):

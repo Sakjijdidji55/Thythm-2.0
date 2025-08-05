@@ -2,9 +2,10 @@ import json
 import os
 import shutil
 import tkinter as tk
-from tkinter import filedialog
-from PIL import Image, ImageTk
 from collections import defaultdict
+from tkinter import filedialog
+
+from PIL import Image, ImageTk
 
 user_inform_keys = ["name", "icon_path", "description"]
 user_inform = defaultdict(str)

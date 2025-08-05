@@ -1,11 +1,26 @@
+import os
+import random
+import threading
 import time
-from load import *
-from user import *
-from Music import *
-from MusicManager import *
-from setting import *
-from MusicEnd import *
 from logging import getLogger
+
+import pygame
+
+from load import (
+    Raindrop,
+    enter_music,
+    enter_video,
+    music_inform,
+    normal_font,
+    start_video,
+    switch_video,
+)
+from Music import deal_name, musics
+from MusicEnd import MUSIC
+from MusicManager import ThemeManager, black, enter_music_effect
+from setting import MUSICSETTING
+from user import HEIGHT, WIDTH, User, clock, window
+from userData import user_inform
 
 log = getLogger(__name__)
 user = User(user_inform["name"], user_inform["icon_path"], user_inform["description"])

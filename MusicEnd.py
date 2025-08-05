@@ -1,6 +1,21 @@
 import threading
-import Music
-from load import *
+
+import pygame
+
+from load import (
+    HEIGHT,
+    WIDTH,
+    black,
+    continue_img,
+    enter_music_effect,
+    gameover_music,
+    good_img,
+    miss_img,
+    perfect_img,
+    return_img,
+    set_img,
+)
+from Music import MUSIC
 
 name_img = pygame.transform.scale(
     pygame.image.load("./image/EndTop.png"), (600 / 1536 * WIDTH, 100 / 1536 * WIDTH)
@@ -10,7 +25,7 @@ name_img = pygame.transform.scale(
 class MusicEnd:
     def __init__(
         self,
-        song: Music,
+        song: MUSIC,
         score: float,
         total: float,
         perfect: int,

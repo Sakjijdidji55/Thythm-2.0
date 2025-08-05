@@ -1,4 +1,6 @@
-from load import *
+import pygame
+
+from load import HEIGHT, WIDTH, fps, return_img, small_setting_length
 
 
 class MUSICSETTING:
@@ -35,7 +37,10 @@ class MUSICSETTING:
 
     def draw_set(self, window: pygame.Surface):
         rect_surface = pygame.Surface(
-            (WIDTH // 2 + WIDTH // 4, HEIGHT // 2 + HEIGHT // 4)
+            (
+                WIDTH // 2 + WIDTH // 4,
+                HEIGHT // 2 + HEIGHT // 4,
+            )
         )
         rect_surface.fill((0, 0, 0))
         rect_surface.set_alpha(225)

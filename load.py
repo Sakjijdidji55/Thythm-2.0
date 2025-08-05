@@ -1,10 +1,11 @@
-import random
 import os
-import pygame
-from method import *
-from pynput.keyboard import Key, Controller
-from userData import *
+import random
 
+import pygame
+from pynput.keyboard import Controller, Key
+
+from method import load_from_json
+from userData import get_music_inform
 
 pygame.init()
 

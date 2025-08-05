@@ -1,6 +1,22 @@
-from load import *
-from MusicChoicer import *
+import sys
 import threading
+
+import pygame
+
+from load import (
+    HEIGHT,
+    WIDTH,
+    black,
+    clock,
+    enter_music_effect,
+    left,
+    return_img,
+    right,
+    set_img,
+    top_image,
+    window,
+)
+from MusicChoicer import MusicChoicer
 
 
 class theme:

@@ -1,10 +1,31 @@
+import os
+import random
+import sys
 import time
 from logging import getLogger
 
 import psutil
-import user
-from init import *
+import pygame
 
+import user
+from init import (
+    HEIGHT,
+    WIDTH,
+    Raindrop,
+    begin,
+    clock,
+    cur_machine,
+    deal_name,
+    help_switch,
+    music_inform,
+    raindrops,
+    setting,
+    wait_to_load,
+    window,
+)
+from load import font, fps
+from MusicEnd import MusicEnd
+from userData import music_inform_path, save_music_inform
 
 log = getLogger(__name__)
 

@@ -1,5 +1,20 @@
 import sys
-from load import *
+
+import pygame
+
+from load import (
+    HEIGHT,
+    WIDTH,
+    board,
+    font,
+    font1,
+    icon,
+    return_img,
+    set_img,
+    userboard,
+    window,
+)
+from userData import set_user_inform, user_inform, user_inform_path
 
 authors = ["正趣果上课", "14911.", "友人A", "风笙"]
 information = ["24级FZU", "24级CDUT", "24级CMC", "24级SWMU"]
@@ -8,7 +23,8 @@ information = ["24级FZU", "24级CDUT", "24级CMC", "24级SWMU"]
 def show():
     about = font.render("作者: ", True, (0, 0, 0))
     window.blit(
-        about, (WIDTH - userboard.get_width() + 100 / 1536 * WIDTH, 220 / 1536 * WIDTH)
+        about,
+        (WIDTH - userboard.get_width() + 100 / 1536 * WIDTH, 220 / 1536 * WIDTH),
     )  # 在用户面板上绘制作者
 
     author = font.render("迷路的小朋友", True, (0, 0, 0))

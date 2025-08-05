@@ -1,15 +1,27 @@
 import random
 import sys
-from logging import getLogger
 import threading
 import time
+from logging import getLogger
 
 import pygame
-from method import load_from_json, deal_name
-from load import *
-from node import *
-from setting import *
 
+from load import (
+    HEIGHT,
+    WIDTH,
+    big_return_img,
+    black,
+    clock,
+    continue_img,
+    enter_music_effect,
+    fps,
+    get_speed,
+    musics,
+    sound_effect,
+    stop_img,
+)
+from method import deal_name, load_from_json
+from node import LONGBALL, Ball, RaindropBall, make_particles
 
 log = getLogger(__name__)
 music_notes = load_from_json("music_data/music_notes.json")
@@ -270,13 +282,11 @@ class MUSIC(music):
 
     def not_have_many_ball_(self):
         return (
-            sum(
-                [
-                    1
-                    for ball in self.every_place_ball.values()
-                    if ball and ball.y < WIDTH // 4
-                ]
-            )
+            sum([
+                1
+                for ball in self.every_place_ball.values()
+                if ball and ball.y < WIDTH // 4
+            ])
             < 3
         )
 

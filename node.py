@@ -1,8 +1,10 @@
-import pygame
-import random
 import math
-from load import *
+import random
 from logging import getLogger
+
+import pygame
+
+from load import WIDTH, circle_img, get_speed
 
 log = getLogger(__name__)
 
